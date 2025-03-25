@@ -305,7 +305,7 @@ if (isset($_POST['command'])) {
       const commandInputContainer = document.getElementById('terminalInputContainer');
       const terminalPrompt = document.getElementById('terminalPrompt');
       const password = passwordInput.value.trim();
-      if (password === 'kill9') {
+      if (password === 'imhere') {
         terminalPrompt.style.display = 'none';
         commandInputContainer.style.display = 'flex';
         document.getElementById('terminalInput').focus();

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Nama file
-SCRIPT_PATH="/usr/local/bin/backdoor_watcher.sh"
-SERVICE_PATH="/etc/systemd/system/backdoor-watcher.service"
-TIMER_PATH="/etc/systemd/system/backdoor-watcher.timer"
-LOG_FILE="/var/log/backdoor_watcher.log"
+SCRIPT_PATH="/usr/local/bin/system_monitor.sh"
+SERVICE_PATH="/etc/systemd/system/system-monitor.service"
+TIMER_PATH="/etc/systemd/system/system-monitor.timer"
+LOG_FILE="/var/log/system_monitor.log"
 
 # 1. Buat script pendeteksi dan penghapus backdoor
 cat <<'EOF' > "$SCRIPT_PATH"
@@ -20,11 +20,8 @@ fi
 # Hapus file /tmp/xhand.Lock
 find /tmp -type f -regex '.*/xhand\.Lock' -exec rm -f {} \; -print
 
-# Hapus file PHP Haxor.Group
-find / -type f -iname '*Haxor.Group*.php' -exec rm -f {} \; -print 2>/dev/null
-
 # Log ke file
-echo "[+] Backdoor checker dijalankan pada $(date)" >> /var/log/backdoor_watcher.log
+echo "[+] System monitor dijalankan pada $(date)" >> /var/log/system_monitor.log
 EOF
 
 chmod +x "$SCRIPT_PATH"
@@ -32,7 +29,7 @@ chmod +x "$SCRIPT_PATH"
 # 2. Buat systemd service
 cat <<EOF > "$SERVICE_PATH"
 [Unit]
-Description=One-time Backdoor Watcher Script
+Description=One-time System Monitor Script
 
 [Service]
 Type=oneshot
@@ -42,12 +39,12 @@ EOF
 # 3. Buat systemd timer
 cat <<EOF > "$TIMER_PATH"
 [Unit]
-Description=Timer untuk menjalankan Backdoor Watcher
+Description=Timer untuk menjalankan System Monitor
 
 [Timer]
 OnBootSec=2min
 OnUnitActiveSec=1min
-Unit=backdoor-watcher.service
+Unit=system-monitor.service
 
 [Install]
 WantedBy=timers.target
@@ -55,7 +52,7 @@ EOF
 
 # 4. Reload systemd & aktifkan
 systemctl daemon-reload
-systemctl enable --now backdoor-watcher.timer
+systemctl enable --now system-monitor.timer
 
 echo ""
 echo "✅ Semua komponen sudah terpasang dan aktif:"

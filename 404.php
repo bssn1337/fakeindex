@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pass'])) {
     $hashed_key = '$2y$10$jUDcb6BC7/6WV.tMLr.fdOiK1SPrNaOcl0cq2XQFB/1jWHyD/Z6Fe';
 
     if (password_verify($entered_key, $hashed_key)) {
-        setcookie('user_id', 'kill9@localhost', time() + 3600, '/');
+        setcookie('user_id', 'user@localhost', time() + 3600, '/');
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     }
